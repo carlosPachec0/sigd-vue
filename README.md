@@ -78,6 +78,43 @@ npm run preview    # Preview production build
 npm test           # Run unit tests
 ```
 
+## Testing
+
+Tests are located in the `src/tests/` directory, organized by feature:
+
+```
+src/tests/
+├── authentication/
+│   ├── components/
+│   │   ├── LoginForm.test.ts
+│   │   └── SignupForm.test.ts
+│   └── stores/
+│       └── auth.store.test.ts
+└── shared/
+    └── api/
+        └── http-error.test.ts
+```
+
+Run all tests:
+
+```bash
+npm test
+```
+
+Run tests for a specific module:
+
+```bash
+npm test -- src/tests/authentication
+```
+
+Run a specific test file:
+
+```bash
+npm test -- src/tests/authentication/stores/auth.store.test.ts
+```
+
+Tests use Vitest with happy-dom for DOM simulation and `@vue/test-utils` for component mounting.
+
 ## Architecture
 
 Each domain module (academies, students, offers, payments, assistance) follows the same pattern:

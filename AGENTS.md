@@ -95,11 +95,30 @@ Student (1) → (N) Payment
 
 ## Testing
 
-```bash
-npm test           # runs vitest in watch mode
+Tests are located in the `src/tests/` directory, organized by feature:
+
+```
+src/tests/
+├── authentication/
+│   ├── components/
+│   │   ├── LoginForm.test.ts
+│   │   └── SignupForm.test.ts
+│   └── stores/
+│       └── auth.store.test.ts
+└── shared/
+    └── api/
+        └── http-error.test.ts
 ```
 
-Tests live alongside source files as `*.test.ts`. Test files use `@vue/test-utils` `mount()` for component tests and plain assertions for store/service logic. Environment: happy-dom.
+### Commands
+
+```bash
+npm test           # runs all tests
+npm test -- src/tests/authentication    # runs tests for a specific module
+npm test -- src/tests/authentication/stores/auth.store.test.ts  # runs a single test file
+```
+
+Test files use `@vue/test-utils` `mount()` for component tests and plain assertions for store/service logic. Environment: happy-dom.
 
 ## Environment
 

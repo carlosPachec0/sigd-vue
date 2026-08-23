@@ -1,15 +1,14 @@
 export interface PaymentDto {
   id: string
+  student_id: string
   subject: string
-  student_id: number
-  amount: number
-  created_at: string
-  updated_at: string
+  amount: string
+  created_at: string | null
+  updated_at: string | null
 }
 
 export interface CreatePaymentDto {
-  subject?: string
-  student_id: number
+  subject: string
   amount: number
 }
 

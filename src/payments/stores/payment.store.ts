@@ -9,11 +9,11 @@ export const usePaymentStore = defineStore('payment', () => {
   const isLoading = ref(false)
   const error = ref<HttpError | null>(null)
 
-  async function load(studentId?: number): Promise<void> {
+  async function load(academyId: number, studentId: number): Promise<void> {
     isLoading.value = true
     error.value = null
     try {
-      payments.value = await paymentService.getAll(studentId)
+      payments.value = await paymentService.getAll(academyId, studentId)
     } catch (err) {
       const httpError = err instanceof HttpError ? err : normalizeError(err)
       if (httpError.status === 404) {
@@ -27,11 +27,25 @@ export const usePaymentStore = defineStore('payment', () => {
     }
   }
 
-  async function create(payload: CreatePaymentDto): Promise<void> {
+  async function getById(academyId: number, studentId: number, paymentId: string): Promise<PaymentDto> {
     isLoading.value = true
     error.value = null
     try {
-      const created = await paymentService.create(payload)
+      return await paymentService.getById(academyId, studentId, paymentId)
+    } catch (err) {
+      const httpError = err instanceof HttpError ? err : normalizeError(err)
+      error.value = httpError
+      throw httpError
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  async function create(academyId: number, studentId: number, payload: CreatePaymentDto): Promise<void> {
+    isLoading.value = true
+    error.value = null
+    try {
+      const created = await paymentService.create(academyId, studentId, payload)
       payments.value.push(created)
     } catch (err) {
       error.value = err instanceof HttpError ? err : normalizeError(err)
@@ -41,12 +55,17 @@ export const usePaymentStore = defineStore('payment', () => {
     }
   }
 
-  async function update(id: string, payload: UpdatePaymentDto): Promise<void> {
+  async function update(
+    academyId: number,
+    studentId: number,
+    paymentId: string,
+    payload: UpdatePaymentDto,
+  ): Promise<void> {
     isLoading.value = true
     error.value = null
     try {
-      const updated = await paymentService.update(id, payload)
-      const index = payments.value.findIndex((p) => p.id === id)
+      const updated = await paymentService.update(academyId, studentId, paymentId, payload)
+      const index = payments.value.findIndex((p) => p.id === paymentId)
       if (index !== -1) {
         payments.value[index] = updated
       }
@@ -58,12 +77,12 @@ export const usePaymentStore = defineStore('payment', () => {
     }
   }
 
-  async function remove(id: string): Promise<void> {
+  async function remove(academyId: number, studentId: number, paymentId: string): Promise<void> {
     isLoading.value = true
     error.value = null
     try {
-      await paymentService.remove(id)
-      payments.value = payments.value.filter((p) => p.id !== id)
+      await paymentService.remove(academyId, studentId, paymentId)
+      payments.value = payments.value.filter((p) => p.id !== paymentId)
     } catch (err) {
       error.value = err instanceof HttpError ? err : normalizeError(err)
       throw error.value
@@ -72,5 +91,5 @@ export const usePaymentStore = defineStore('payment', () => {
     }
   }
 
-  return { payments, isLoading, error, load, create, update, remove }
+  return { payments, isLoading, error, load, getById, create, update, remove }
 })

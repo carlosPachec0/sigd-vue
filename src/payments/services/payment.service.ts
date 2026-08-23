@@ -2,27 +2,49 @@ import { BaseHttpService } from '@/shared/api/base-http-service'
 import type { PaymentDto, CreatePaymentDto, UpdatePaymentDto } from '../types/payment.dto'
 
 class PaymentService extends BaseHttpService {
-  private readonly resource = '/api/v1/payments'
-
-  getAll(studentId?: number): Promise<PaymentDto[]> {
-    const params = studentId ? { student_id: studentId } : undefined
-    return this.get<PaymentDto[]>(this.resource, { params })
+  private basePath(academyId: number, studentId: number): string {
+    return `/api/v1/academies/${academyId}/students/${studentId}/payments`
   }
 
-  getById(id: string): Promise<PaymentDto> {
-    return this.get<PaymentDto>(`${this.resource}/${id}`)
+  async getAll(academyId: number, studentId: number): Promise<PaymentDto[]> {
+    const envelope = await this.get<PaymentDto[]>(this.basePath(academyId, studentId))
+    return envelope.data ?? []
   }
 
-  create(payload: CreatePaymentDto): Promise<PaymentDto> {
-    return this.post<PaymentDto, CreatePaymentDto>(this.resource, payload)
+  async getById(academyId: number, studentId: number, paymentId: string): Promise<PaymentDto> {
+    const envelope = await this.get<PaymentDto>(
+      `${this.basePath(academyId, studentId)}/${paymentId}`,
+    )
+    return envelope.data
   }
 
-  update(id: string, payload: UpdatePaymentDto): Promise<PaymentDto> {
-    return this.patch<PaymentDto, UpdatePaymentDto>(`${this.resource}/${id}`, payload)
+  async create(
+    academyId: number,
+    studentId: number,
+    payload: CreatePaymentDto,
+  ): Promise<PaymentDto> {
+    const envelope = await this.post<PaymentDto, CreatePaymentDto>(
+      this.basePath(academyId, studentId),
+      payload,
+    )
+    return envelope.data
   }
 
-  remove(id: string): Promise<void> {
-    return this.delete<void>(`${this.resource}/${id}`)
+  async update(
+    academyId: number,
+    studentId: number,
+    paymentId: string,
+    payload: UpdatePaymentDto,
+  ): Promise<PaymentDto> {
+    const envelope = await this.put<PaymentDto, UpdatePaymentDto>(
+      `${this.basePath(academyId, studentId)}/${paymentId}`,
+      payload,
+    )
+    return envelope.data
+  }
+
+  async remove(academyId: number, studentId: number, paymentId: string): Promise<void> {
+    await this.delete<void>(`${this.basePath(academyId, studentId)}/${paymentId}`)
   }
 }
 

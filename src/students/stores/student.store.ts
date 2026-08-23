@@ -9,7 +9,7 @@ export const useStudentStore = defineStore('student', () => {
   const isLoading = ref(false)
   const error = ref<HttpError | null>(null)
 
-  async function load(academyId?: number): Promise<void> {
+  async function load(academyId: number): Promise<void> {
     isLoading.value = true
     error.value = null
     try {
@@ -27,11 +27,25 @@ export const useStudentStore = defineStore('student', () => {
     }
   }
 
-  async function create(payload: CreateStudentDto): Promise<void> {
+  async function getById(academyId: number, studentId: number): Promise<StudentDto> {
     isLoading.value = true
     error.value = null
     try {
-      const created = await studentService.create(payload)
+      return await studentService.getById(academyId, studentId)
+    } catch (err) {
+      const httpError = err instanceof HttpError ? err : normalizeError(err)
+      error.value = httpError
+      throw httpError
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  async function create(academyId: number, payload: CreateStudentDto): Promise<void> {
+    isLoading.value = true
+    error.value = null
+    try {
+      const created = await studentService.create(academyId, payload)
       students.value.push(created)
     } catch (err) {
       error.value = err instanceof HttpError ? err : normalizeError(err)
@@ -41,12 +55,12 @@ export const useStudentStore = defineStore('student', () => {
     }
   }
 
-  async function update(id: number, payload: UpdateStudentDto): Promise<void> {
+  async function update(academyId: number, studentId: number, payload: UpdateStudentDto): Promise<void> {
     isLoading.value = true
     error.value = null
     try {
-      const updated = await studentService.update(id, payload)
-      const index = students.value.findIndex((s) => s.id === id)
+      const updated = await studentService.update(academyId, studentId, payload)
+      const index = students.value.findIndex((s) => s.id === studentId)
       if (index !== -1) {
         students.value[index] = updated
       }
@@ -58,12 +72,12 @@ export const useStudentStore = defineStore('student', () => {
     }
   }
 
-  async function remove(id: number): Promise<void> {
+  async function remove(academyId: number, studentId: number): Promise<void> {
     isLoading.value = true
     error.value = null
     try {
-      await studentService.remove(id)
-      students.value = students.value.filter((s) => s.id !== id)
+      await studentService.remove(academyId, studentId)
+      students.value = students.value.filter((s) => s.id !== studentId)
     } catch (err) {
       error.value = err instanceof HttpError ? err : normalizeError(err)
       throw error.value
@@ -72,5 +86,5 @@ export const useStudentStore = defineStore('student', () => {
     }
   }
 
-  return { students, isLoading, error, load, create, update, remove }
+  return { students, isLoading, error, load, getById, create, update, remove }
 })

@@ -11,7 +11,6 @@ export interface StudentDto {
 }
 
 export interface CreateStudentDto {
-  academy_id: number
   name: string
   gender: 'Male' | 'Female'
   birth_date: string

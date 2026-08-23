@@ -2,27 +2,40 @@ import { BaseHttpService } from '@/shared/api/base-http-service'
 import type { StudentDto, CreateStudentDto, UpdateStudentDto } from '../types/student.dto'
 
 class StudentService extends BaseHttpService {
-  private readonly resource = '/api/v1/students'
-
-  getAll(academyId?: number): Promise<StudentDto[]> {
-    const params = academyId ? { academy_id: academyId } : undefined
-    return this.get<StudentDto[]>(this.resource, { params })
+  async getAll(academyId: number): Promise<StudentDto[]> {
+    const envelope = await this.get<StudentDto[]>(`/api/v1/academies/${academyId}/students`)
+    return envelope.data ?? []
   }
 
-  getById(id: number): Promise<StudentDto> {
-    return this.get<StudentDto>(`${this.resource}/${id}`)
+  async getById(academyId: number, studentId: number): Promise<StudentDto> {
+    const envelope = await this.get<StudentDto>(
+      `/api/v1/academies/${academyId}/students/${studentId}`,
+    )
+    return envelope.data
   }
 
-  create(payload: CreateStudentDto): Promise<StudentDto> {
-    return this.post<StudentDto, CreateStudentDto>(this.resource, payload)
+  async create(academyId: number, payload: CreateStudentDto): Promise<StudentDto> {
+    const envelope = await this.post<StudentDto, CreateStudentDto>(
+      `/api/v1/academies/${academyId}/students`,
+      payload,
+    )
+    return envelope.data
   }
 
-  update(id: number, payload: UpdateStudentDto): Promise<StudentDto> {
-    return this.patch<StudentDto, UpdateStudentDto>(`${this.resource}/${id}`, payload)
+  async update(
+    academyId: number,
+    studentId: number,
+    payload: UpdateStudentDto,
+  ): Promise<StudentDto> {
+    const envelope = await this.put<StudentDto, UpdateStudentDto>(
+      `/api/v1/academies/${academyId}/students/${studentId}`,
+      payload,
+    )
+    return envelope.data
   }
 
-  remove(id: number): Promise<void> {
-    return this.delete<void>(`${this.resource}/${id}`)
+  async remove(academyId: number, studentId: number): Promise<void> {
+    await this.delete<void>(`/api/v1/academies/${academyId}/students/${studentId}`)
   }
 }
 

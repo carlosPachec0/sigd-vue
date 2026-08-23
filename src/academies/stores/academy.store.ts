@@ -27,6 +27,20 @@ export const useAcademyStore = defineStore('academy', () => {
     }
   }
 
+  async function getById(id: number): Promise<AcademyDto> {
+    isLoading.value = true
+    error.value = null
+    try {
+      return await academyService.getById(id)
+    } catch (err) {
+      const httpError = err instanceof HttpError ? err : normalizeError(err)
+      error.value = httpError
+      throw httpError
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   async function create(payload: CreateAcademyDto): Promise<void> {
     isLoading.value = true
     error.value = null
@@ -72,5 +86,5 @@ export const useAcademyStore = defineStore('academy', () => {
     }
   }
 
-  return { academies, isLoading, error, load, create, update, remove }
+  return { academies, isLoading, error, load, getById, create, update, remove }
 })

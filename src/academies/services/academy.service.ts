@@ -4,24 +4,28 @@ import type { AcademyDto, CreateAcademyDto, UpdateAcademyDto } from '../types/ac
 class AcademyService extends BaseHttpService {
   private readonly resource = '/api/v1/academies'
 
-  getAll(): Promise<AcademyDto[]> {
-    return this.get<AcademyDto[]>(this.resource)
+  async getAll(): Promise<AcademyDto[]> {
+    const envelope = await this.get<AcademyDto[]>(this.resource)
+    return envelope.data ?? []
   }
 
-  getById(id: number): Promise<AcademyDto> {
-    return this.get<AcademyDto>(`${this.resource}/${id}`)
+  async getById(id: number): Promise<AcademyDto> {
+    const envelope = await this.get<AcademyDto>(`${this.resource}/${id}`)
+    return envelope.data
   }
 
-  create(payload: CreateAcademyDto): Promise<AcademyDto> {
-    return this.post<AcademyDto, CreateAcademyDto>(this.resource, payload)
+  async create(payload: CreateAcademyDto): Promise<AcademyDto> {
+    const envelope = await this.post<AcademyDto, CreateAcademyDto>(this.resource, payload)
+    return envelope.data
   }
 
-  update(id: number, payload: UpdateAcademyDto): Promise<AcademyDto> {
-    return this.patch<AcademyDto, UpdateAcademyDto>(`${this.resource}/${id}`, payload)
+  async update(id: number, payload: UpdateAcademyDto): Promise<AcademyDto> {
+    const envelope = await this.put<AcademyDto, UpdateAcademyDto>(`${this.resource}/${id}`, payload)
+    return envelope.data
   }
 
-  remove(id: number): Promise<void> {
-    return this.delete<void>(`${this.resource}/${id}`)
+  async remove(id: number): Promise<void> {
+    await this.delete<void>(`${this.resource}/${id}`)
   }
 }
 

@@ -32,7 +32,7 @@ httpClient.interceptors.response.use(
   (response: AxiosResponse) => response,
   (error: unknown) => {
     const httpError = normalizeError(error)
-    const requestUrl = error?.config?.url ?? ''
+    const requestUrl = (error as { config?: { url?: string } })?.config?.url ?? ''
     if (httpError.status === 401 && !requestUrl.includes('/auth/login')) {
       localStorage.removeItem(TOKEN_KEY)
       window.location.href = '/login'

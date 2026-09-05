@@ -28,6 +28,10 @@ function navigateToPayments(studentId: number) {
   router.push({ name: 'payment-list', params: { academyId, studentId } })
 }
 
+function navigateToAssistance(studentId: number) {
+  router.push({ name: 'assistance-list', params: { academyId, studentId } })
+}
+
 function navigateBack() {
   router.push({ name: 'academy-list' })
 }
@@ -81,6 +85,9 @@ async function handleDelete(studentId: number) {
             <td class="student-list__actions">
               <BaseButton variant="secondary" size="sm" @click="navigateToPayments(student.id)">
                 Payments
+              </BaseButton>
+              <BaseButton variant="secondary" size="sm" @click="navigateToAssistance(student.id)">
+                Attendance
               </BaseButton>
               <BaseButton variant="ghost" size="sm" @click="navigateToEdit(student.id)">
                 Edit

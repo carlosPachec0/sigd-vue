@@ -44,11 +44,11 @@ describe('AcademyForm', () => {
       },
     })
 
-    expect(wrapper.find('#name').element.value).toBe('Existing Club')
-    expect(wrapper.find('#discipline').element.value).toBe('Judo')
-    expect(wrapper.find('#registration-fee').element.value).toBe('50')
-    expect(wrapper.find('#monthly-fee').element.value).toBe('25')
-    expect(wrapper.find('#class-fee').element.value).toBe('10')
+    expect(wrapper.find<HTMLInputElement>('#name').element.value).toBe('Existing Club')
+    expect(wrapper.find<HTMLInputElement>('#discipline').element.value).toBe('Judo')
+    expect(wrapper.find<HTMLInputElement>('#registration-fee').element.value).toBe('50')
+    expect(wrapper.find<HTMLInputElement>('#monthly-fee').element.value).toBe('25')
+    expect(wrapper.find<HTMLInputElement>('#class-fee').element.value).toBe('10')
   })
 
   it('allows typing in all fields', async () => {
@@ -60,11 +60,11 @@ describe('AcademyForm', () => {
     await wrapper.find('#monthly-fee').setValue('30')
     await wrapper.find('#class-fee').setValue('15')
 
-    expect(wrapper.find('#name').element.value).toBe('New Academy')
-    expect(wrapper.find('#discipline').element.value).toBe('Karate')
-    expect(wrapper.find('#registration-fee').element.value).toBe('60')
-    expect(wrapper.find('#monthly-fee').element.value).toBe('30')
-    expect(wrapper.find('#class-fee').element.value).toBe('15')
+    expect(wrapper.find<HTMLInputElement>('#name').element.value).toBe('New Academy')
+    expect(wrapper.find<HTMLInputElement>('#discipline').element.value).toBe('Karate')
+    expect(wrapper.find<HTMLInputElement>('#registration-fee').element.value).toBe('60')
+    expect(wrapper.find<HTMLInputElement>('#monthly-fee').element.value).toBe('30')
+    expect(wrapper.find<HTMLInputElement>('#class-fee').element.value).toBe('15')
   })
 
   it('shows error messages when errors prop is provided', () => {

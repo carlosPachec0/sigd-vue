@@ -102,6 +102,24 @@ const router = createRouter({
       component: () => import('@/payments/views/PaymentEditView.vue'),
       meta: { requiresAuth: true },
     },
+    {
+      path: '/academies/:academyId/students/:studentId/assistance',
+      name: 'assistance-list',
+      component: () => import('@/assistance/views/AssistanceListView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/academies/:academyId/students/:studentId/assistance/create',
+      name: 'assistance-create',
+      component: () => import('@/assistance/views/AssistanceCreateView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/academies/:academyId/students/:studentId/assistance/:assistanceId/edit',
+      name: 'assistance-edit',
+      component: () => import('@/assistance/views/AssistanceEditView.vue'),
+      meta: { requiresAuth: true },
+    },
   ],
 })
 

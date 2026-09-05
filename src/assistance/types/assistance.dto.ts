@@ -1,10 +1,15 @@
 export interface AssistanceDto {
-  id: number
-  student_id: number
+  id: string
+  student_id: string
   date: string
+  created_at: string | null
+  updated_at: string | null
 }
 
 export interface CreateAssistanceDto {
-  student_id: number
   date: string
+}
+
+export interface UpdateAssistanceDto {
+  date?: string
 }

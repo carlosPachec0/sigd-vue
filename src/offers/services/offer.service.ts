@@ -4,25 +4,29 @@ import type { OfferDto, CreateOfferDto, UpdateOfferDto } from '../types/offer.dt
 class OfferService extends BaseHttpService {
   private readonly resource = '/api/v1/offers'
 
-  getAll(academyId?: number): Promise<OfferDto[]> {
+  async getAll(academyId?: number): Promise<OfferDto[]> {
     const params = academyId ? { academy_id: academyId } : undefined
-    return this.get<OfferDto[]>(this.resource, { params })
+    const envelope = await this.get<OfferDto[]>(this.resource, { params })
+    return envelope.data ?? []
   }
 
-  getById(id: number): Promise<OfferDto> {
-    return this.get<OfferDto>(`${this.resource}/${id}`)
+  async getById(id: number): Promise<OfferDto> {
+    const envelope = await this.get<OfferDto>(`${this.resource}/${id}`)
+    return envelope.data
   }
 
-  create(payload: CreateOfferDto): Promise<OfferDto> {
-    return this.post<OfferDto, CreateOfferDto>(this.resource, payload)
+  async create(payload: CreateOfferDto): Promise<OfferDto> {
+    const envelope = await this.post<OfferDto, CreateOfferDto>(this.resource, payload)
+    return envelope.data
   }
 
-  update(id: number, payload: UpdateOfferDto): Promise<OfferDto> {
-    return this.patch<OfferDto, UpdateOfferDto>(`${this.resource}/${id}`, payload)
+  async update(id: number, payload: UpdateOfferDto): Promise<OfferDto> {
+    const envelope = await this.patch<OfferDto, UpdateOfferDto>(`${this.resource}/${id}`, payload)
+    return envelope.data
   }
 
-  remove(id: number): Promise<void> {
-    return this.delete<void>(`${this.resource}/${id}`)
+  async remove(id: number): Promise<void> {
+    await this.delete<void>(`${this.resource}/${id}`)
   }
 }
 

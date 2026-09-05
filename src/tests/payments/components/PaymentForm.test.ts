@@ -43,8 +43,8 @@ describe('PaymentForm', () => {
       },
     })
 
-    expect(wrapper.find('#subject').element.value).toBe('Monthly Fee')
-    expect(wrapper.find('#amount').element.value).toBe('25.00')
+    expect(wrapper.find<HTMLInputElement>('#subject').element.value).toBe('Monthly Fee')
+    expect(wrapper.find<HTMLInputElement>('#amount').element.value).toBe('25.00')
   })
 
   it('allows typing in all fields', async () => {
@@ -53,8 +53,8 @@ describe('PaymentForm', () => {
     await wrapper.find('#subject').setValue('Class Fee')
     await wrapper.find('#amount').setValue('15')
 
-    expect(wrapper.find('#subject').element.value).toBe('Class Fee')
-    expect(wrapper.find('#amount').element.value).toBe('15')
+    expect(wrapper.find<HTMLInputElement>('#subject').element.value).toBe('Class Fee')
+    expect(wrapper.find<HTMLInputElement>('#amount').element.value).toBe('15')
   })
 
   it('shows error messages when errors prop is provided', () => {

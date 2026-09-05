@@ -34,7 +34,7 @@ describe('StudentForm', () => {
   it('defaults gender to Male', () => {
     const wrapper = mount(StudentForm)
 
-    expect(wrapper.find('#gender').element.value).toBe('Male')
+    expect(wrapper.find<HTMLSelectElement>('#gender').element.value).toBe('Male')
   })
 
   it('allows changing gender', async () => {
@@ -42,7 +42,7 @@ describe('StudentForm', () => {
 
     await wrapper.find('#gender').setValue('Female')
 
-    expect(wrapper.find('#gender').element.value).toBe('Female')
+    expect(wrapper.find<HTMLSelectElement>('#gender').element.value).toBe('Female')
   })
 
   it('populates fields with initial values', () => {
@@ -62,11 +62,11 @@ describe('StudentForm', () => {
       },
     })
 
-    expect(wrapper.find('#name').element.value).toBe('Jane Doe')
-    expect(wrapper.find('#gender').element.value).toBe('Female')
-    expect(wrapper.find('#birth-date').element.value).toBe('2012-08-20')
-    expect(wrapper.find('#height').element.value).toBe('1.55')
-    expect(wrapper.find('#weight').element.value).toBe('48')
+    expect(wrapper.find<HTMLInputElement>('#name').element.value).toBe('Jane Doe')
+    expect(wrapper.find<HTMLSelectElement>('#gender').element.value).toBe('Female')
+    expect(wrapper.find<HTMLInputElement>('#birth-date').element.value).toBe('2012-08-20')
+    expect(wrapper.find<HTMLInputElement>('#height').element.value).toBe('1.55')
+    expect(wrapper.find<HTMLInputElement>('#weight').element.value).toBe('48')
   })
 
   it('allows typing in all fields', async () => {
@@ -78,11 +78,11 @@ describe('StudentForm', () => {
     await wrapper.find('#height').setValue('1.65')
     await wrapper.find('#weight').setValue('55')
 
-    expect(wrapper.find('#name').element.value).toBe('John Doe')
-    expect(wrapper.find('#gender').element.value).toBe('Male')
-    expect(wrapper.find('#birth-date').element.value).toBe('2010-05-10')
-    expect(wrapper.find('#height').element.value).toBe('1.65')
-    expect(wrapper.find('#weight').element.value).toBe('55')
+    expect(wrapper.find<HTMLInputElement>('#name').element.value).toBe('John Doe')
+    expect(wrapper.find<HTMLSelectElement>('#gender').element.value).toBe('Male')
+    expect(wrapper.find<HTMLInputElement>('#birth-date').element.value).toBe('2010-05-10')
+    expect(wrapper.find<HTMLInputElement>('#height').element.value).toBe('1.65')
+    expect(wrapper.find<HTMLInputElement>('#weight').element.value).toBe('55')
   })
 
   it('shows error messages when errors prop is provided', () => {

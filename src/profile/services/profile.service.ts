@@ -1,24 +1,20 @@
 import { BaseHttpService } from '@/shared/api/base-http-service'
-import type {
-  UpdateProfileDto,
-  ChangePasswordDto,
-  ProfileResponseDto,
-  MessageResponseDto,
-} from '../types/profile.dto'
+import type { ApiEnvelope } from '@/shared/api/base-http-service'
+import type { ProfileDto, UpdateProfileDto, ChangePasswordDto } from '../types/profile.dto'
 
 class ProfileService extends BaseHttpService {
   private readonly resource = '/api/v1/profile'
 
-  getProfile(): Promise<ProfileResponseDto> {
-    return this.get<ProfileResponseDto>(this.resource)
+  getProfile(): Promise<ApiEnvelope<ProfileDto>> {
+    return this.get<ProfileDto>(this.resource)
   }
 
-  updateProfile(payload: UpdateProfileDto): Promise<ProfileResponseDto> {
-    return this.put<ProfileResponseDto, UpdateProfileDto>(this.resource, payload)
+  updateProfile(payload: UpdateProfileDto): Promise<ApiEnvelope<ProfileDto>> {
+    return this.put<ProfileDto, UpdateProfileDto>(this.resource, payload)
   }
 
-  changePassword(payload: ChangePasswordDto): Promise<MessageResponseDto> {
-    return this.put<MessageResponseDto, ChangePasswordDto>(`${this.resource}/password`, payload)
+  changePassword(payload: ChangePasswordDto): Promise<ApiEnvelope<null>> {
+    return this.put<null, ChangePasswordDto>(`${this.resource}/password`, payload)
   }
 }
 
